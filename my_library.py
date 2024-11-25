@@ -57,3 +57,13 @@ def naive_bayes(full_table, evidence_row, target_column):
   neg, pos = compute_probs(p0, p1)
   #return your 2 results in a list
   return [neg, pos]
+
+  all_mets = []
+  for threshold in thresholds:
+    predictions = [1 if pos>threshold else 0 for pos in pos_probs]
+    pred_act_list = up_zip_lists(predictions, up_get_column(scaled_test, 'fire'))
+    mets = metrics(pred_act_list)
+    mets['Threshold'] = threshold
+    all_mets = all_mets + [mets]
+  
+  all_mets[:4]
