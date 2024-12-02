@@ -122,3 +122,30 @@ def metrics(zipped_list):
   mets_dict= {'Precision': round(precision, 2), 'Recall': round(recall, 2), 'F1': round(f1, 2), 'Accuracy': round(accuracy, 2)}
   #finally, return the dictionary
   return mets_dict
+
+def try_archs(train_table, test_table, target_column_name, architectures, thresholds):
+  arch_acc_dict = {}  #ignore if not attempting extra credit
+
+  #now loop through architectures
+  for arch in all_architectures:
+    probs = up_neural_net(train_table, test_table, arch, target_column_name)
+    pos_probs = [y for x,y in probs]
+    k_actuals = up_get_column(test_table, target_column_name)
+
+    #loop through thresholds
+    all_mets = []
+    for t in thresholds:
+      predictions = [1 if pos>t else 0 for pos in pos_probs]
+      pred_act_list = up_zip_lists(predictions, k_actuals)
+      mets = metrics(pred_act_list)
+      mets['Threshold'] = t
+      all_mets = all_mets + [mets]
+
+
+    #arch_acc_dict[tuple(arch)] = max(...)  #extra credit - uncomment if want to attempt
+    arch_acc_dict[tuple(arch)] = max([met['Accuracy'] for met in all_mets])
+
+    print(f'Architecture: {arch}')
+    display(up_metrics_table(all_mets))
+
+  return arch_acc_dict
