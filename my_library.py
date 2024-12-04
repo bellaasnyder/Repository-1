@@ -127,7 +127,7 @@ def try_archs(train_table, test_table, target_column_name, architectures, thresh
   arch_acc_dict = {}  #ignore if not attempting extra credit
 
   #now loop through architectures
-  for arch in all_architectures:
+  for arch in architectures:
     probs = up_neural_net(train_table, test_table, arch, target_column_name)
     pos_probs = [y for x,y in probs]
     k_actuals = up_get_column(test_table, target_column_name)
