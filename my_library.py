@@ -150,5 +150,3 @@ def try_archs(train_table, test_table, target_column_name, architectures, thresh
 
   return arch_acc_dict
 
-
-pos_probs = [pos for neg,pos in probs]
